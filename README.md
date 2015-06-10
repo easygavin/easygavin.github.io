@@ -1,1 +1,1 @@
-# easygavin.github.io
+Welcome to Gavin's Blog, have a nice trip.
