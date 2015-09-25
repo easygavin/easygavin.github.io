@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+  <meta name="description" content="如果不快乐，就去创造些快乐！">
+  <meta name="author" content="xiongqs">
+
+  <title>简单快乐</title>
+
+  <!-- Fav and touch icons -->
+  <link rel="shortcut icon" type="image/x-icon" href="../../assets/img/icon/favicon.ico"/>
+  <link rel="apple-touch-icon-precomposed" sizes="144x144"
+        href="../../assets/img/icon/apple-touch-icon-144-precomposed.png">
+  <link rel="apple-touch-icon-precomposed" sizes="114x114"
+        href="../../assets/img/icon/apple-touch-icon-114-precomposed.png">
+  <link rel="apple-touch-icon-precomposed" sizes="72x72"
+        href="../../assets/img/icon/apple-touch-icon-72-precomposed.png">
+  <link rel="apple-touch-icon-precomposed" href="../../assets/img/icon/apple-touch-icon-57-precomposed.png">
+  <link rel="shortcut icon" href="../../assets/img/icon/favicon.ico">
+
+  <!-- Bootstrap core CSS -->
+  <link href="../../assets/bootstrap/css/bootstrap.css" rel="stylesheet">
+
+  <!-- Custom styles for this template -->
+  <link href="../../css/common.css" rel="stylesheet">
+  <link href="../../css/tech/index.css" rel="stylesheet">
+
+  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+  <!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+</head>
+
+<body>
+
+<!-- Fixed navbar -->
+<nav class="navbar navbar-fixed-top  navbar-default">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+              aria-expanded="false" aria-controls="navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand light" href="#">
+        <img src="../../assets/img/logo.png" alt="Xiongqs" height="35">
+      </a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="../../index.html">Home</a></li>
+        <li><a href="#">Travel</a></li>
+        <li><a href="#">Game</a></li>
+        <li class="active"><a href="#">Tech</a></li>
+        <li><a href="#">About</a></li>
+      </ul>
+    </div>
+    <!--/.nav-collapse -->
+  </div>
+</nav>
+
+<div class="container">
+<div class="row">
+
+<div class="col-sm-8 blog-main">
+
+<div id="content">
+
+
+<div class="post-422 post type-post status-publish format-standard hentry category-cool-stuff">
+
+<div class="entry entry-">
+
+<div class="entrytitle_wrap">
+  <div class="entrytitle">
+
+    <h1><a href="http://igoro.com/archive/what-really-happens-when-you-navigate-to-a-url/" rel="bookmark"
+           title="Link to What really happens when you navigate to a URL">What really happens when you navigate to a
+      URL</a></h1>
+  </div>
+
+
+</div>
+
+
+<div class="entrybody">
+  <p>As a software developer, you certainly have a high-level picture of how web apps work and what kinds of
+    technologies are involved: the browser, HTTP, HTML, web server, request handlers, and so on.</p>
+
+  <p>In this article, we will take a deeper look at the sequence of events that take place when you visit a URL.</p>
+
+  <h3>1. You enter a URL into the browser</h3>
+
+  <p>It all starts here:</p>
+
+  <p><img
+      style="border-right-width: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px"
+      title="image" border="0" alt="image" src="http://igoro.com/wordpress/wp-content/uploads/2010/02/image4.png"
+      width="591" height="103"></p>
+
+  <p><strong></strong></p>
+
+  <h3>2. The browser looks up the IP address for the domain name</h3>
+
+  <p>&nbsp;<img
+      style="border-right-width: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px"
+      title="image" border="0" alt="image" src="http://igoro.com/wordpress/wp-content/uploads/2010/02/image13.png"
+      width="228" height="96"></p>
+
+  <p>The first step in the navigation is to figure out the IP address for the visited domain. The DNS lookup proceeds as
+    follows:</p>
+
+  <p><span id="more-422"></span>
+  </p>
+  <ul>
+    <li><strong>Browser cache – </strong>The browser caches DNS records for some time. Interestingly, the OS does not
+      tell the browser the time-to-live for each DNS record, and so the browser caches them for a fixed duration (varies
+      between browsers, 2 – 30 minutes).
+    </li>
+    <li><strong>OS cache</strong> – If the browser cache does not contain the desired record, the browser makes a system
+      call (gethostbyname in Windows). The OS has its own cache.
+    </li>
+    <li><strong>Router cache</strong> – The request continues on to your router, which typically has its own DNS cache.
+    </li>
+    <li><strong>ISP DNS cache</strong> – The next place checked is the cache ISP’s DNS server. With a cache, naturally.
+    </li>
+    <li><strong>Recursive search</strong> – Your ISP’s DNS server begins a recursive search, from the root nameserver,
+      through the .com top-level nameserver, to Facebook’s nameserver. Normally, the DNS server will have names of the
+      .com nameservers in cache, and so a hit to the root nameserver will not be necessary.
+    </li>
+  </ul>
+  <p>Here is a diagram of what a recursive DNS search looks like:</p>
+
+  <p><img
+      style="border-right-width: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px"
+      title="500px-An_example_of_theoretical_DNS_recursion_svg" border="0"
+      alt="500px-An_example_of_theoretical_DNS_recursion_svg"
+      src="http://igoro.com/wordpress/wp-content/uploads/2010/02/500pxAn_example_of_theoretical_DNS_recursion_svg.png"
+      width="500" height="178">&nbsp;</p>
+
+  <div class="mynote">
+    <p>One worrying thing about DNS is that the entire domain like wikipedia.org or facebook.com seems to map to a
+      single IP address. Fortunately, there are ways of mitigating the bottleneck:</p>
+    <ul>
+      <li><strong>Round-robin DNS</strong> is a solution where the DNS lookup returns multiple IP addresses, rather than
+        just one. For example, facebook.com actually maps to four IP addresses.
+      </li>
+      <li><strong>Load-balancer</strong> is the piece of hardware that listens on a particular IP address and forwards
+        the requests to other servers. Major sites will typically use expensive high-performance load balancers.
+      </li>
+      <li><strong>Geographic DNS </strong>improves scalability by mapping a domain name to different IP addresses,
+        depending on the client’s geographic location. This is great for hosting static content so that different
+        servers don’t have to update shared state.
+      </li>
+      <li><strong>Anycast</strong> is a routing technique where a single IP address maps to multiple physical servers.
+        Unfortunately, anycast does not fit well with TCP and is rarely used in that scenario.
+      </li>
+    </ul>
+  </div>
+  <div class="mynote">
+    <p>Most of the DNS servers themselves use anycast to achieve high availability and low latency <strong>of the DNS
+      lookups</strong>.</p>
+
+    <p></p></div>
+  <h3>3. The browser sends a HTTP request to the web server</h3>
+
+  <p><img
+      style="border-right-width: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; margin-left: 0px; border-left-width: 0px; margin-right: 0px"
+      title="image" border="0" alt="image" src="http://igoro.com/wordpress/wp-content/uploads/2010/02/image22.png"
+      width="216" height="95"></p>
+
+  <p>You can be pretty sure that Facebook’s homepage will not be served from the browser cache because dynamic pages
+    expire either very quickly or immediately (expiry date set to past).</p>
+
+  <p>So, the browser will send this request to the Facebook server:</p>
+<pre class="code">GET http://facebook.com/ HTTP/1.1
+Accept: application/x-ms-application, image/jpeg, application/xaml+xml, <font style="color: lightblue">[...]</font>
+User-Agent: Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; WOW64; <font style="color: lightblue">[...]</font>
+Accept-Encoding: gzip, deflate
+Connection: Keep-Alive
+Host: facebook.com
+Cookie: datr=1265876274-<font style="color: lightblue">[...]</font>; locale=en_US; lsd=WW<font style="color: lightblue">[...]</font>; c_user=2101<font
+      style="color: lightblue">[...]</font></pre>
+  <p>The GET request names the <strong>URL</strong> to fetch<strong>:</strong> “http://facebook.com/”. The browser
+    identifies itself (<strong>User-Agent</strong> header), and states what types of responses it will accept (<strong>Accept</strong>
+    and <strong>Accept-Encoding</strong> headers). The <strong>Connection</strong> header asks the server to keep the
+    TCP connection open for further requests.</p>
+
+  <p>The request also contains the <strong>cookies</strong> that the browser has for this domain. As you probably
+    already know, cookies are key-value pairs that track the state of a web site in between different page requests. And
+    so the cookies store the name of the logged-in user, a secret number that was assigned to the user by the server,
+    some of user’s settings, etc. The cookies will be stored in a text file on the client, and sent to the server with
+    every request.</p>
+
+  <div class="mynote">
+    <p>There is a variety of tools that let you view the raw HTTP requests and corresponding responses. My favorite tool
+      for viewing the raw HTTP traffic is <a href="http://www.fiddler2.com/fiddler2/">fiddler</a>, but there are many
+      other tools (e.g., FireBug) These tools are a great help when optimizing a site.</p>
+  </div>
+  <div class="mynote">
+    <p>In addition to GET requests, another type of requests that you may be familiar with is a POST request, typically
+      used to submit forms. A GET request sends its parameters via the URL (e.g.:
+      http://robozzle.com/puzzle.aspx<strong>?id=85</strong>). A POST request sends its parameters in the request body,
+      just under the headers.</p>
+  </div>
+  <div class="mynote">
+    <p>The trailing slash in the URL “http://facebook.com/” is important. In this case, the browser can safely add the
+      slash. For URLs of the form http://example.com/folderOrFile, the browser cannot automatically add a slash, because
+      it is not clear whether folderOrFile is a folder or a file. In such cases, the browser will visit the URL without
+      the slash, and the server will respond with a redirect, resulting in an unnecessary roundtrip.</p>
+  </div>
+  <h3>4. The facebook server responds with a permanent redirect</h3>
+
+  <p><img
+      style="border-right-width: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px"
+      title="image" border="0" alt="image" src="http://igoro.com/wordpress/wp-content/uploads/2010/02/image8.png"
+      width="214" height="87"></p>
+
+  <p>This is the response that the Facebook server sent back to the browser request:</p>
+<pre class="code">HTTP/1.1 301 Moved Permanently
+Cache-Control: private, no-store, no-cache, must-revalidate, post-check=0,
+      pre-check=0
+Expires: Sat, 01 Jan 2000 00:00:00 GMT
+Location: http://www.facebook.com/
+P3P: CP="DSP LAW"
+Pragma: no-cache
+Set-Cookie: made_write_conn=deleted; expires=Thu, 12-Feb-2009 05:09:50 GMT;
+      path=/; domain=.facebook.com; httponly
+Content-Type: text/html; charset=utf-8
+X-Cnection: close
+Date: Fri, 12 Feb 2010 05:09:51 GMT
+Content-Length: 0</pre>
+  <p>The server responded with a 301 Moved Permanently response to tell the browser to go to “http://www.facebook.com/”
+    instead of “http://facebook.com/”. </p>
+
+  <div class="mynote">
+    <p>There are interesting reasons why the server insists on the redirect instead of immediately responding with the
+      web page that the user wants to see.</p>
+
+    <p>One reason has to do with <strong>search engine rankings</strong>. See, if there are two URLs for the same page,
+      say <a href="http://www.igoro.com/">http://www.igoro.com/</a> and <a
+          href="http://igoro.com/">http://igoro.com/</a>, search engine may consider them to be two different sites,
+      each with fewer incoming links and thus a lower ranking. Search engines understand permanent redirects (301), and
+      will combine the incoming links from both sources into a single ranking.</p>
+
+    <p>Also, multiple URLs for the same content are not <strong>cache-friendly</strong>. When a piece of content has
+      multiple names, it will potentially appear multiple times in caches.</p>
+  </div>
+  <h3>5. The browser follows the redirect</h3>
+
+  <p><img
+      style="border-right-width: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px"
+      title="image" border="0" alt="image" src="http://igoro.com/wordpress/wp-content/uploads/2010/02/image23.png"
+      width="216" height="95"></p>
+
+  <p>The browser now knows that “http://www.facebook.com/” is the correct URL to go to, and so it sends out another GET
+    request:</p>
+<pre class="code">GET http://www.facebook.com/ HTTP/1.1
+Accept: application/x-ms-application, image/jpeg, application/xaml+xml, <font style="color: lightblue">[...]</font>
+Accept-Language: en-US
+User-Agent: Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; WOW64; <font style="color: lightblue">[...]</font>
+Accept-Encoding: gzip, deflate
+Connection: Keep-Alive
+Cookie: lsd=XW<font style="color: lightblue">[...]</font>; c_user=21<font style="color: lightblue">[...]</font>; x-referer=<font
+      style="color: lightblue">[...]</font>
+Host: www.facebook.com</pre>
+  <p>The meaning of the headers is the same as for the first request.</p>
+
+  <h3>6. The server ‘handles’ the request</h3>
+
+  <p><img
+      style="border-right-width: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px"
+      title="image" border="0" alt="image" src="http://igoro.com/wordpress/wp-content/uploads/2010/02/image9.png"
+      width="93" height="78"></p>
+
+  <p>The server will receive the GET request, process it, and send back a response.</p>
+
+  <p>This may seem like a straightforward task, but in fact there is a lot of interesting stuff that happens here – even
+    on a simple site like my blog, let alone on a massively scalable site like facebook.</p>
+  <ul>
+    <li><strong>Web server software<br></strong>The web server software (e.g., IIS or Apache) receives the HTTP request
+      and decides which request handler should be executed to handle this request. A request handler is a program (in
+      ASP.NET, PHP, Ruby, …) that reads the request and generates the HTML for the response.
+      <p>In the simplest case, the request handlers can be stored in a file hierarchy whose structure mirrors the URL
+        structure, and so for example <a href="http://example.com/folder1/page1.aspx">http://example.com/folder1/page1.aspx</a>
+        URL will map to file /httpdocs/folder1/page1.aspx. The web server software can also be configured so that URLs
+        are manually mapped to request handlers, and so the public URL of page1.aspx could be <a
+            href="http://example.com/folder1/page1">http://example.com/folder1/page1</a>. </p>
+    </li>
+    <li><strong>Request handler<br></strong>The request handler reads the request, its parameters, and cookies. It will
+      read and possibly update some data stored on the server. Then, the request handler will generate a HTML response.
+    </li>
+  </ul>
+  <div class="mynote">
+    <p>One interesting difficulty that every dynamic website faces is how to store data. Smaller sites will often have a
+      single SQL database to store their data, but sites that store a large amount of data and/or have many visitors
+      have to find a way to split the database across multiple machines. Solutions include sharding (splitting up a
+      table across multiple databases based on the primary key), replication, and usage of simplified databases with
+      weakened consistency semantics. </p>
+  </div>
+  <div class="mynote">
+    <p>One technique to keep data updates cheap is to defer some of the work to a batch job. For example, Facebook has
+      to update the newsfeed in a timely fashion, but the data backing the “People you may know” feature may only need
+      to be updated nightly (my guess, I don’t actually know how they implement this feature). Batch job updates result
+      in staleness of some less important data, but can make data updates much faster and simpler.</p>
+  </div>
+  <h3>7. The server sends back a HTML response</h3>
+
+  <p><img
+      style="border-right-width: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px"
+      title="image" border="0" alt="image" src="http://igoro.com/wordpress/wp-content/uploads/2010/02/image10.png"
+      width="214" height="87"></p>
+
+  <p>Here is the response that the server generated and sent back:</p>
+<pre class="code">HTTP/1.1 200 OK
+Cache-Control: private, no-store, no-cache, must-revalidate, post-check=0,
+    pre-check=0
+Expires: Sat, 01 Jan 2000 00:00:00 GMT
+P3P: CP="DSP LAW"
+Pragma: no-cache
+Content-Encoding: gzip
+Content-Type: text/html; charset=utf-8
+X-Cnection: close
+Transfer-Encoding: chunked
+Date: Fri, 12 Feb 2010 09:05:55 GMT
+
+2b3<br>��������T�n�@����<font style="color: lightblue">[...]</font></pre>
+  <p>The entire response is 36 kB, the bulk of them in the byte blob at the end that I trimmed.</p>
+
+  <p>The <strong>Content-Encoding</strong> header tells the browser that the response body is compressed using the gzip
+    algorithm. After decompressing the blob, you’ll see the HTML you’d expect:</p>
+<pre>&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"&nbsp;&nbsp;&nbsp;
+      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"&gt;
+&lt;html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      lang="en" id="facebook" class=" no_js"&gt;
+&lt;head&gt;
+&lt;meta http-equiv="Content-type" content="text/html; charset=utf-8" /&gt;
+&lt;meta http-equiv="Content-language" content="en" /&gt;
+...</pre>
+  <p>In addition to compression, headers specify whether and how to cache the page, any cookies to set (none in this
+    response), privacy information, etc.</p>
+
+  <div class="mynote">
+    <p>Notice the header that sets <strong>Content-Type</strong> to <strong>text/html</strong>. The header instructs the
+      browser to render the response content as HTML, instead of say downloading it as a file. The browser will use the
+      header to decide how to interpret the response, but will consider other factors as well, such as the extension of
+      the URL.</p>
+  </div>
+  <h3>8. The browser begins rendering the HTML</h3>
+
+  <p>Even before the browser has received the entire HTML document, it begins rendering the website:</p>
+
+  <p>&nbsp;<img
+      style="border-right-width: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px"
+      title="image" border="0" alt="image" src="http://igoro.com/wordpress/wp-content/uploads/2010/02/image6.png"
+      width="244" height="137"></p>
+
+  <h3>9. The browser sends requests for objects embedded in HTML</h3>
+
+  <p><img
+      style="border-right-width: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px"
+      title="image" border="0" alt="image" src="http://igoro.com/wordpress/wp-content/uploads/2010/02/image11.png"
+      width="214" height="126"></p>
+
+  <p>As the browser renders the HTML, it will notice tags that require fetching of other URLs. The browser will send a
+    GET request to retrieve each of these files.</p>
+
+  <p>Here are a few URLs that my visit to facebook.com retrieved:</p>
+  <ul>
+    <li><strong>Images<br></strong>http://static.ak.fbcdn.net/rsrc.php/z12E0/hash/8q2anwu7.gif<br>http://static.ak.fbcdn.net/rsrc.php/zBS5C/hash/7hwy7at6.gif<br>…
+    </li>
+    <li><strong>CSS style sheets<br></strong>http://static.ak.fbcdn.net/rsrc.php/z448Z/hash/2plh8s4n.css<br>http://static.ak.fbcdn.net/rsrc.php/zANE1/hash/cvtutcee.css<br>…
+    </li>
+    <li><strong>JavaScript files</strong><br>http://static.ak.fbcdn.net/rsrc.php/zEMOA/hash/c8yzb6ub.js<br>http://static.ak.fbcdn.net/rsrc.php/z6R9L/hash/cq2lgbs8.js<br>…
+    </li>
+  </ul>
+  <p>Each of these URLs will go through process a similar to what the HTML page went through. So, the browser will look
+    up the domain name in DNS, send a request to the URL, follow redirects, etc.</p>
+
+  <p>However, static files – unlike dynamic pages – allow the browser to cache them. Some of the files may be served up
+    from cache, without contacting the server at all. The browser knows how long to cache a particular file because the
+    response that returned the file contained an Expires header. Additionally, each response may also contain an ETag
+    header that works like a version number – if the browser sees an ETag for a version of the file it already has, it
+    can stop the transfer immediately.</p>
+
+  <div class="mynote">
+    <p>Can you guess what <strong>“fbcdn.net”</strong> in the URLs stands for? A safe bet is that it means “Facebook
+      content delivery network”. Facebook uses a content delivery network (CDN) to distribute static content – images,
+      style sheets, and JavaScript files. So, the files will be copied to many machines across the globe.</p>
+
+    <p>Static content often represents the bulk of the bandwidth of a site, and can be easily replicated across a CDN.
+      Often, sites will use a third-party CDN provider, instead of operating a CND themselves. For example, Facebook’s
+      static files are hosted by Akamai, the largest CDN provider.</p>
+
+    <p>As a demonstration, when you try to ping static.ak.fbcdn.net, you will get a response from an akamai.net server.
+      Also, interestingly, if you ping the URL a couple of times, may get responses from different servers, which
+      demonstrates the load-balancing that happens behind the scenes.</p>
+  </div>
+  <h3>10. The browser sends further asynchronous (AJAX) requests</h3>
+
+  <p><img
+      style="border-right-width: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px"
+      title="image" border="0" alt="image" src="http://igoro.com/wordpress/wp-content/uploads/2010/02/image12.png"
+      width="214" height="120"></p>
+
+  <p>In the spirit of Web 2.0, the client continues to communicate with the server even after the page is rendered.</p>
+
+  <p>For example, Facebook chat will continue to update the list of your logged in friends as they come and go. To
+    update the list of your logged-in friends, the JavaScript executing in your browser has to send an asynchronous
+    request to the server. The asynchronous request is a programmatically constructed GET or POST request that goes to a
+    special URL. In the Facebook example, the client sends a POST request to
+    http://www.facebook.com/ajax/chat/buddy_list.php to fetch the list of your friends who are online.</p>
+
+  <p>This pattern is sometimes referred to as “AJAX”, which stands for “Asynchronous JavaScript And XML”, even though
+    there is no particular reason why the server has to format the response as XML. For example, Facebook returns
+    snippets of JavaScript code in response to asynchronous requests.</p>
+
+  <div class="mynote">
+    <p>Among other things, the fiddler tool lets you view the asynchronous requests sent by your browser. In fact, not
+      only you can observe the requests passively, but you can also modify and resend them. The fact that it is this
+      easy to “spoof” AJAX requests causes a lot of grief to developers of online games with scoreboards. (Obviously,
+      please don’t cheat that way.)</p>
+  </div>
+  <div class="mynote">
+    <p>Facebook chat provides an example of an interesting problem with AJAX: pushing data from server to client. Since
+      HTTP is a request-response protocol, the chat server cannot push new messages to the client. Instead, the client
+      has to poll the server every few seconds to see if any new messages arrived.</p>
+
+    <p><a href="http://en.wikipedia.org/wiki/Push_technology#Long_polling">Long polling</a> is an interesting technique
+      to decrease the load on the server in these types of scenarios. If the server does not have any new messages when
+      polled, it simply does not send a response back. And, if a message for this client is received within the timeout
+      period, the server will find the outstanding request and return the message with the response.</p>
+  </div>
+  <h3>Conclusion</h3>
+
+  <p>Hopefully this gives you a better idea of how the different web pieces work together.</p>
+
+</div>
+
+<div class="entrymeta">
+  <div class="postinfo">
+
+
+    <span class="postedby">Posted by Igor Ostrovsky</span>
+
+    <span class="filedto"><a href="http://igoro.com/archive/what-really-happens-when-you-navigate-to-a-url/" rel="category tag">Link</a> </span>
+
+  </div>
+</div>
+
+
+</div>
+
+</div>
+
+
+</div>
+
+</div>
+<!-- /.blog-main -->
+
+<div class="col-sm-3 col-sm-offset-1 blog-sidebar">
+  <div class="sidebar-module sidebar-module-inset info">
+    <img class="portrait" src="../../images/portrait.png">
+
+    <h2 class="name">Gavin</h2>
+
+    <p class="intro">
+      Exist to be happy, not to impress.
+    </p>
+    <p class="intro">
+      活着是为了自己快乐，而不是为了取悦他人。
+    </p>
+  </div>
+</div>
+<!-- /.blog-sidebar -->
+
+</div>
+<!-- /.row -->
+</div>
+<!-- /.container -->
+
+<footer class="blog-footer">
+  <p>Xiongqs's blog by xiongqs.</p>
+
+  <p>
+    <a href="javascript:window.scrollTo(1, 0);">Back to top</a>
+  </p>
+</footer>
+
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>
+<script src="../../assets/bootstrap/js/bootstrap.min.js"></script>
+<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+<script src="../../assets/js/vendor/ie10-viewport-bug-workaround.js"></script>
+</body>
+</html>

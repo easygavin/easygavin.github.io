@@ -45,3 +45,18 @@ h6, .h6 {
 .blog-footer p:last-child {
   margin-bottom: 0;
 }
+
+.info .portrait {
+  border-radius: 15px;
+}
+
+.info .name {
+  color: #337ab7;
+  padding: 15px 0 5px;
+}
+
+.info .intro {
+  color: #999;
+  text-indent: 20px;
+  font-size: 20px;
+}
