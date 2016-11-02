@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Trade</title>
+  <script type="text/javascript" src="d3.js"></script>
+  <script type="text/javascript" src="techan.js"></script>
+  <style>
+
+    body {
+      font: 10px sans-serif;
+    }
+
+    .svg {
+      background: #000000;
+    }
+
+    .axis text {
+      font-size: 6px;
+      fill: #0F0;
+    }
+
+    text.symbol {
+      fill: #BBBBBB;
+    }
+
+    path.candle {
+      stroke: #000000;
+    }
+
+    path.candle.body {
+      stroke-width: 0;
+    }
+
+    path.candle.up {
+      fill: #00AA00;
+      stroke: #00AA00;
+    }
+
+    path.candle.down {
+      fill: #FF0000;
+      stroke: #FF0000;
+    }
+
+    path.volume {
+      fill: #DDDDDD;
+    }
+
+    rect.pane {
+      cursor: move;
+      fill: none;
+      pointer-events: all;
+    }
+
+    .indicator path.line {
+      fill: none;
+      stroke-width: 1;
+    }
+
+    .ma-0 path.line {
+      stroke: #1f77b4;
+    }
+
+    .ma-1 path.line {
+      stroke: #aec7e8;
+    }
+
+    .ma-2 path.line {
+      stroke: #ff7f0e;
+    }
+
+    .crosshair {
+      cursor: crosshair;
+    }
+
+    .crosshair path.wire {
+      stroke: #DDDDDD;
+      stroke-dasharray: 1, 1;
+    }
+
+    .crosshair .axisannotation path {
+      fill: #DDDDDD;
+    }
+
+    .coords {
+      fill: #00FF00;
+      font-size: 12px;
+    }
+
+  </style>
+</head>
+
+<body>
+
+<script>
+
+  function chart(name, symbol, fullWidth, fullHeight) {
+    var margin = {top: 50, right: 50, bottom: 50, left: 50},
+        width = fullWidth - margin.left - margin.right,
+        height = fullHeight - margin.top - margin.bottom,
+        volumeHeight = fullHeight * .25;
+
+    var parseDate = d3.timeParse("%d-%b-%y");
+
+    var zoom = d3.zoom()
+        .on("zoom", zoomed);
+
+    var x = techan.scale.financetime()
+        .range([0, width]);
+
+    var y = d3.scaleLinear()
+        .range([height, 0]);
+
+    var yPercent = y.copy();   // Same as y at this stage, will get a different domain later
+
+    var yVolume = d3.scaleLinear()
+        .range([height, height - volumeHeight]);
+
+    var yInit, yPercentInit, zoomableInit;
+
+    var xAxis = d3.axisBottom(x)
+        .ticks(4);
+
+    var yAxis = d3.axisRight(y)
+        .ticks(4);
+
+    var candlestick = techan.plot.candlestick()
+        .xScale(x)
+        .yScale(y);
+
+    var sma0 = techan.plot.sma()
+        .xScale(x)
+        .yScale(y);
+
+    var sma1 = techan.plot.sma()
+        .xScale(x)
+        .yScale(y);
+
+    var ema2 = techan.plot.ema()
+        .xScale(x)
+        .yScale(y);
+
+    var volume = techan.plot.volume()
+        .accessor(candlestick.accessor())   // Set the accessor to a ohlc accessor so we get highlighted bars
+        .xScale(x)
+        .yScale(yVolume);
+
+    var timeAnnotation = techan.plot.axisannotation()
+        .axis(xAxis)
+        .orient('bottom')
+        .format(d3.timeFormat('%Y-%m-%d'))
+        .width(65)
+        .translate([0, height]);
+
+    var ohlcAnnotation = techan.plot.axisannotation()
+        .axis(yAxis)
+        .orient('right')
+        .format(d3.format(',.2f'))
+        .translate([x(1), 0]);
+
+    var percentAxis = d3.axisLeft(yPercent)
+        .ticks(4)
+        .tickFormat(d3.format('+.1%'));
+
+    var percentAnnotation = techan.plot.axisannotation()
+        .axis(percentAxis)
+        .orient('left');
+
+    var volumeAxis = d3.axisRight(yVolume)
+        .ticks(2)
+        .tickFormat(d3.format(",.3s"));
+
+    var volumeAnnotation = techan.plot.axisannotation()
+        .axis(volumeAxis)
+        .orient("right")
+        .width(35);
+
+    var ohlcCrosshair = techan.plot.crosshair()
+        .xScale(timeAnnotation.axis().scale())
+        .yScale(ohlcAnnotation.axis().scale())
+        .xAnnotation(timeAnnotation)
+        .yAnnotation([ohlcAnnotation, volumeAnnotation])
+        .verticalWireRange([0, height])
+        .on("move", move);
+
+    var svg = d3.select("body").append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+        .attr("class", "svg")
+        .append("g")
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+    var defs = svg.append("defs");
+
+    defs.append("clipPath")
+        .attr("id", "ohlcClip")
+        .append("rect")
+        .attr("x", 0)
+        .attr("y", 0)
+        .attr("width", width)
+        .attr("height", height);
+
+    var ohlcSelection = svg.append("g")
+        .attr("class", "ohlc")
+        .attr("transform", "translate(0,0)");
+
+    ohlcSelection.append("g")
+        .attr("class", "axis")
+        .attr("transform", "translate(" + x(1) + ",0)")
+        .append("text")
+        .attr("transform", "rotate(-90)")
+        .attr("y", 40)
+        .attr("dy", ".71em")
+        .style("text-anchor", "end")
+        .text("Price ($)");
+
+    svg.append("clipPath")
+        .attr("id", "clip")
+        .append("rect")
+        .attr("x", 0)
+        .attr("y", y(1))
+        .attr("width", width)
+        .attr("height", y(0) - y(1));
+
+    svg.append('text')
+        .attr("class", "symbol")
+        .attr("x", 5)
+        .text(name + " (" + symbol + ")");
+
+    svg.append("g")
+        .attr("class", "volume")
+        .attr("clip-path", "url(#ohlcClip)");
+
+    svg.append("g")
+        .attr("class", "candlestick")
+        .attr("clip-path", "url(#ohlcClip)");
+
+    svg.append("g")
+        .attr("class", "indicator sma ma-0")
+        .attr("clip-path", "url(#ohlcClip)");
+
+    svg.append("g")
+        .attr("class", "indicator sma ma-1")
+        .attr("clip-path", "url(#ohlcClip)");
+
+    svg.append("g")
+        .attr("class", "indicator ema ma-2")
+        .attr("clip-path", "url(#ohlcClip)");
+
+    svg.append("g")
+        .attr("class", "x axis")
+        .attr("transform", "translate(0," + height + ")");
+
+    svg.append("g")
+        .attr("class", "y axis")
+        .attr("transform", "translate(" + width + ",0)");
+
+    svg.append("g")
+        .attr("class", "percent axis");
+
+    svg.append("g")
+        .attr("class", "volume axis");
+
+    svg.append("rect")
+        .attr("class", "pane")
+        .attr("width", width)
+        .attr("height", height)
+        .call(zoom);
+
+    // Add trendlines and other interactions last to be above zoom pane
+    svg.append('g')
+        .attr("class", "crosshair ohlc");
+
+    var dateTxt = appendText(5, 1);
+
+    var openTxt = appendText(5, 2);
+
+    var highTxt = appendText(5, 3);
+
+    var lowTxt = appendText(5, 4);
+
+    var closeTxt = appendText(5, 5);
+
+    d3.select("button").on("click", reset);
+
+    /**
+     *  追加Text
+     * */
+    function appendText(x, i, width, height) {
+      return svg.append('text')
+          .attr("x", x)
+          .attr("y", i * 16)
+          .attr("class", "coords");
+    }
+
+    /**
+     * 重新画图
+     * */
+    function redraw(data) {
+      fillData = data;
+
+      var accessor = candlestick.accessor(),
+          indicatorPreRoll = 33;  // Don't show where indicators don't have data
+
+      x.domain(techan.scale.plot.time(data, accessor).domain());
+      y.domain(techan.scale.plot.ohlc(data.slice(indicatorPreRoll), accessor).domain());
+      yPercent.domain(techan.scale.plot.percent(y, accessor(data[indicatorPreRoll])).domain());
+      yVolume.domain(techan.scale.plot.volume(data, accessor.v).domain());
+
+      svg.select("g.candlestick").datum(data).call(candlestick);
+
+      svg.select("g.volume").datum(data).call(volume);
+      svg.select("g.sma.ma-0").datum(techan.indicator.sma().period(10)(data)).call(sma0);
+      svg.select("g.sma.ma-1").datum(techan.indicator.sma().period(20)(data)).call(sma1);
+      svg.select("g.ema.ma-2").datum(techan.indicator.ema().period(50)(data)).call(ema2);
+
+      svg.select("g.crosshair.ohlc").call(ohlcCrosshair).call(zoom);
+
+      zoomableInit = x.zoomable().domain([indicatorPreRoll, data.length]).copy(); // Zoom in a little to hide indicator preroll
+      yInit = y.copy();
+      yPercentInit = yPercent.copy();
+
+      draw();
+
+      // Set next timer expiry
+      setTimeout(function () {
+        var newData;
+
+        if (data.length < feed.length) {
+          // Simulate a daily feed
+          newData = feed.slice(0, data.length + 1);
+        } else {
+          // Simulate intra day updates when no feed is left
+          var last = data[data.length - 1];
+          // Last must be between high and low
+          last.close = Math.round(((last.high - last.low) * Math.random()) * 10) / 10 + last.low;
+
+          newData = data;
+        }
+
+        redraw(newData);
+
+      }, (Math.random() * 1000) + 400); // Randomly pick an interval to update the chart
+    }
+
+    // 所有数据
+    var feed, fillData;
+
+    /**
+     * 获取数据
+     */
+    function fetch() {
+      d3.csv(symbol + ".csv", function (error, data) {
+        var accessor = candlestick.accessor();
+
+        feed = data.map(function (d) {
+          return {
+            date: parseDate(d.Date),
+            open: +d.Open,
+            high: +d.High,
+            low: +d.Low,
+            close: +d.Close,
+            volume: +d.Volume
+          };
+        }).sort(function (a, b) {
+          return d3.ascending(accessor.d(a), accessor.d(b));
+        });
+
+        // Start off an initial set of data
+        redraw(feed.slice(0, 163));
+      });
+    }
+
+    fetch();
+
+    function reset() {
+      zoom.scale(1);
+      zoom.translate([0, 0]);
+      draw();
+    }
+
+    function zoomed() {
+      x.zoomable().domain(d3.event.transform.rescaleX(zoomableInit).domain());
+      y.domain(d3.event.transform.rescaleY(yInit).domain());
+      yPercent.domain(d3.event.transform.rescaleY(yPercentInit).domain());
+
+      draw();
+    }
+
+    function draw() {
+      svg.select("g.x.axis").call(xAxis);
+      svg.select("g.y.axis").call(yAxis);
+      svg.select("g.volume.axis").call(volumeAxis);
+//      svg.select("g.percent.axis").call(percentAxis);
+
+      // We know the data does not change, a simple refresh that does not perform data joins will suffice.
+      svg.select("g.candlestick").call(candlestick.refresh);
+      svg.select("g.volume").call(volume.refresh);
+      svg.select("g.sma.ma-0").call(sma0.refresh);
+      svg.select("g.sma.ma-1").call(sma1.refresh);
+      svg.select("g.ema.ma-2").call(ema2.refresh);
+      svg.select("g.crosshair.ohlc").call(ohlcCrosshair.refresh);
+    }
+
+    function move(coords) {
+      var items = fillData.filter(function(item) {
+        return item.date === coords.x;
+      });
+
+      if (items && items.length) {
+        dateTxt.text("Date: " + timeAnnotation.format()(items[0].date));
+        openTxt.text("Open："+ items[0].open);
+        highTxt.text("High："+ items[0].high);
+        lowTxt.text("Low："+ items[0].low);
+        closeTxt.text("Close："+ items[0].close);
+      }
+    }
+  }
+
+  chart("Facebook, Inc.", "FB", 640, 300);
+
+</script>
+</body>
+</html>
